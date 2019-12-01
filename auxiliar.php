@@ -129,4 +129,20 @@
     
     <?php
 }
+
+function borrarFila($pdo, $tabla, $id)
+{
+    $sent = $pdo->prepare("DELETE
+                            FROM $tabla
+                            WHERE id = :id");
+    $sent->execute(['id' => $id]);
+
+    if ($sent->rowCount() === 1) {
+        echo 'Fila borrada correctamente';
+        header('Location: index.php');
+    } else {
+        //alert('Ha ocurrido un error inesperado.', 'danger');
+        echo('Ha ocurrio un error inesperado');
+    }
+}
 ?>
