@@ -1,9 +1,20 @@
 <?php
-    function alert($mensaje, $tipo)
+    function alert($mensaje, $tipo = 'alert-success')
     { 
     ?>
-        <div class="<?=$tipo?>">
-            <span><?=$mensaje?></span>
+        <div class="container">
+            <div class="row">
+                <div class="col-6 offset-3">
+                    
+                    <div class="alert <?=$tipo?>" role="alert">
+                        <?=$mensaje?>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                
+            </div>
         </div>
     <?php
     }
@@ -57,16 +68,16 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="#">Inicio <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="index.php">Inicio <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="insertar-cliente.php">Clientes</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="insertar-cline">Clines</a>
+                        <a class="nav-link" href="insertar-cline.php">Clines</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="insertar-decodificador">Descodficadores</a>
+                        <a class="nav-link" href="insertar-decodificador.php">Descodficadores</a>
                     </li>
                       
                 </ul>
@@ -145,4 +156,111 @@ function borrarFila($pdo, $tabla, $id)
         echo('Ha ocurrio un error inesperado');
     }
 }
+
+function comprobarParametrosInsertar($par, &$errores)
+    {
+            $resultado = $par;
+            if (!empty($_POST)) {
+                if (empty(array_diff_key($par, $_POST)) &&
+                    empty(array_diff_key($_POST, $par))) {
+                    $resultado = array_map('trim', $_POST);
+                } else {
+                    $errores[] = 'Los parámetros recibidos no son los correctos.';
+                }
+            }
+            return $resultado;
+    }
+
+    function comprobarValoresInsertar($args, &$errores)
+    {
+        if (!empty($errores) || empty($_POST)) {
+            return;
+        }
+
+        extract($args);    // convierte las claves del array en variables
+
+        if ($servidor !== '') {
+            if (mb_strlen($servidor) > 255) {
+                $errores['servidor'] = 'El servidor no puede tener más de 255 caracteres.';
+            }
+        } else {
+            $errores['servidor'] = 'El nombre del servidor  es obligatirio.';
+        }
+
+        if ($puerto !== '') {
+            if (!ctype_digit($puerto)) {
+                $errores['puerto'] = 'El número de puerto debe ser un número entero positivo.';
+            } elseif (mb_strlen($puerto) > 5) {
+                $errores['puerto'] = 'El número no puede tener más de 4 dígitos.';
+            } elseif ($puerto > 65536 || $puerto <= 1024) {
+                $errores['puerto'] = 'El puerto debe estar comprendido entre 1024 y 65536';
+            }
+        } else {
+            $errores['paginas'] = 'El número paginas es obligatorio.';
+
+        }
+
+        if ($usuario !== '') {
+            if (mb_strlen($usuario) > 255) {
+                $errores['usuario'] = 'El usuario no puede tener más de 255 caracteres.';
+            }
+        } else {
+            $errores['usuario'] = 'El nombre del usuario  es obligatirio.';
+        }
+
+        if ($password !== '') {
+            if (mb_strlen($password) > 255) {
+                $errores['password'] = 'El password no puede tener más de 255 caracteres.';
+            }
+        } else {
+            $errores['password'] = 'El nombre del password  es obligatirio.';
+        }
+
+        if ($fecha_alta !== '') {
+            if (!(validarFecha($fecha_alta))) {
+                $errores['fecha_alta'] = 'La fecha proporcionada no es valida';
+            }
+        } else {
+            $errores['fecha_publi'] = 'La fecha es obligatoria';
+        }
+
+
+    }
+
+    function validarFecha($fecha){
+
+        $valores = explode('-', $fecha);
+        if(count($valores) == 3 && checkdate($valores[1], $valores[2], $valores[0])){
+            return true;
+        }
+        return false;
+    }
+
+    function mensajeError($campo, $errores)
+    {
+        if (isset($errores[$campo])) {
+            return <<<EOT
+            <div class="invalid-feedback">
+                {$errores[$campo]}
+            </div>
+            EOT;
+        } else {
+            return '';
+        }
+    }
+
+    function esValido($campo, $errores)
+        {
+            
+            if (isset($errores[$campo])) {
+                return 'is-invalid';
+            } elseif (!empty($_POST)) {
+                return 'is-valid';
+            } else {
+                return '';
+            }
+        }
+
+
+
 ?>

@@ -18,6 +18,7 @@ if (!isset($_SESSION['login'])){
 
     <!-- Material Design for Bootstrap CSS -->
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/main.css">
 
     <title>Inicio instaladores</title>
   </head>
@@ -44,7 +45,7 @@ if (!isset($_SESSION['login'])){
         <div class="row">
             <div class="col mt-5">
             <table class="table table-bordered">
-            <thead>
+            <thead class="thead-oscuro">
                 <tr>
                     <th scope="col">Servidor</th>
                     <th scope="col">Puerto</th>
@@ -65,12 +66,12 @@ if (!isset($_SESSION['login'])){
                         <td><?=$v['password']?></td>
                         <td><?=$v['fecha_alta']?></td>
                         <td><?=$v['nombre']?></td>
-                        <td>  
-                            <form action="eliminar.php" method="post">
+                        <td class="p-1">  
+                            <form action="eliminar.php" method="post" class="mb-0">
                                 <input type="hidden" name="id" value="<?=$v['id']?>">
-                                <button type="submit" id="eliminar" class="btn btn-danger btn-sm active">Eliminar</button>
+                                <button type="submit"  class="btn btn-danger btn-sm active eliminar">Eliminar</button>
                             </form> 
-                            <a href="modificar.php?id=<?=$v['id']?>"><button class="btn btn-success btn-sm active">Modificar</button></a>
+                            <a href="modificar.php?id=<?=$v['id']?>"><button class="btn btn-success btn-sm active mb-0 mt-0">Modificar</button></a>
                                 
                         </td>
                 </tbody>
@@ -91,12 +92,17 @@ if (!isset($_SESSION['login'])){
     <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
     <script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>
     <script>
-        eliminar.onclick = function() {
-            if(!confirm('¿Seguro que quieres eliminar?')) {
-                return false;
-            };
-            return true;
-            
+
+        var eliminar = document.getElementsByClassName('eliminar');
+        for (let i = 0; i < eliminar.length; i++) {
+             
+            eliminar[i].onclick = function() {
+                if(!confirm('¿Seguro que quieres eliminar?')) {
+                    return false;
+                };
+                return true;
+                
+            }
         }
     </script>
   </body>
