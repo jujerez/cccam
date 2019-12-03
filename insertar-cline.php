@@ -53,7 +53,8 @@ if (!isset($_SESSION['login'])){
 
     <div class="container">
         <div class="row">
-            <div class="col-6 offset-3 mt-5 " style="box-shadow: 2px 2px 10px #666;">
+            <div class="col-6 offset-3 mt-5 p-3" style="box-shadow: 2px 2px 10px #666;">
+            <h2>Insertar cline</h2><hr>
             <form  action="" method="post">
                 <div class="form-group">
                     <label>Servidor</label>
@@ -92,8 +93,8 @@ if (!isset($_SESSION['login'])){
                            class="form-control <?=esValido('password',$errores)?>" 
                            name="password" 
                            value="<?=$parametros['password']?>"
-                           <?=mensajeError('password',$errores)?> 
                     >   
+                    <?=mensajeError('password',$errores)?> 
                 </div>
                 
                 <div class="form-group">
