@@ -173,7 +173,7 @@
 
     
 
-    function comprobarValoresInsertar($args, &$errores)
+    function comprobarValoresInsertar($args, &$errores, $pdo)
     {
         if (!empty($errores) || empty($_POST)) {
             return;
@@ -198,7 +198,7 @@
                 $errores['puerto'] = 'El puerto debe estar comprendido entre 1024 y 65536';
             }
         } else {
-            $errores['paginas'] = 'El número paginas es obligatorio.';
+            $errores['puerto'] = 'El número de puerto es obligatorio.';
 
         }
 
@@ -224,6 +224,22 @@
             }
         } else {
             $errores['fecha_publi'] = 'La fecha es obligatoria';
+        }
+
+        if (isset($args['cliente'])) {
+            if ($cliente === '') {
+                $errores['cliente'] = 'El cliente es obligatorio.';
+            } elseif (!ctype_digit($cliente)) {
+                $errores['cliente'] = 'El cliente no tiene el formato correcto.';
+            } else {
+                $sent = $pdo->prepare('SELECT COUNT(*)
+                                         FROM clientes
+                                        WHERE id = :id');
+                $sent->execute(['id' => $cliente]);
+                if ($sent->fetchColumn() === 0) {
+                    $errores['cliente'] = 'El cliente no existe.';
+                }
+            }
         }
 
 
@@ -265,12 +281,77 @@
         if (mb_strlen($nota) > 255) {
             $errores['nota'] = 'La nota no puede tener más de 255 caracteres.';
         }
-       
 
-        
+    }
+
+    function comprobarValoresDeco($args, &$errores)
+    {
+        if (!empty($errores) || empty($_POST)) {
+            return;
+        }
+
+        extract($args);    // convierte las claves del array en variables
+
+        if ($marca !== '') {
+            if (mb_strlen($marca) > 255) {
+                $errores['marca'] = 'El marca no puede tener más de 255 caracteres.';
+            }
+        } else {
+            $errores['marca'] = 'El nombre de la marca  es obligatorio.';
+        }
+
+        if ($modelo !== '') {
+            if (mb_strlen($modelo) > 255) {
+                $errores['modelo'] = 'El modelo no puede tener más de 255 caracteres.';
+            }
+        } else {
+            $errores['modelo'] = 'El nombre del modelo  es obligatorio.';
+        }
+
+        if ($serial !== '') {
+            if (mb_strlen($serial) > 255) {
+                $errores['serial'] = 'El serial no puede tener más de 255 caracteres.';
+            }
+        } else {
+            $errores['serial'] = 'El serial es obligatorio.';
+        }
+
+       
+        if ($fecha_compra !== '') {
+            if (!(validarFecha($fecha_compra))) {
+                $errores['fecha_compra'] = 'La fecha proporcionada no es valida';
+            }
+        } else {
+            $errores['fecha_pcompra'] = 'La fecha es obligatoria';
+        }
+
+        if ($lugar_compra !== '') {
+            if (mb_strlen($lugar_compra) > 255) {
+                $errores['lugar_compra'] = 'El lugar de compra no puede tener más de 255 caracteres.';
+            }
+        } else {
+            $errores['lugar_compra'] = 'El lugar de la compra es obligatorio.';
+        }
+
+        if (isset($args['cliente'])) {
+            if ($cliente === '') {
+                $errores['cliente'] = 'El cliente es obligatorio.';
+            } elseif (!ctype_digit($cliente)) {
+                $errores['cliente'] = 'El cliente no tiene el formato correcto.';
+            } else {
+                $sent = $pdo->prepare('SELECT COUNT(*)
+                                         FROM clientes
+                                        WHERE id = :id');
+                $sent->execute(['id' => $cliente]);
+                if ($sent->fetchColumn() === 0) {
+                    $errores['cliente'] = 'El cliente no existe.';
+                }
+            }
+        }
 
 
     }
+
 
     function validarFecha($fecha){
 
