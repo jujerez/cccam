@@ -1,5 +1,5 @@
 <?php
-
+    const FPP = 3;
     function alert($mensaje, $tipo = 'alert-success')
     { 
     ?>
@@ -415,6 +415,59 @@
         } else {
             return '';
         }
+    }
+
+    function mostrarPaginador($pag,$npags) {
+        ?>
+        <div class="container">
+            <div class="row">
+                <div class="col-6 offset-3" >
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item <?= ($pag <= 1) ? 'disabled' : '' ?>">
+                            <a class="page-link" href="?pag=<?= $pag - 1 ?>">Anterior</a>
+                            </li>
+                            <?php for ($i = 1; $i <= $npags; $i++): ?>
+                                <li class="page-item <?= ($i == $pag) ? 'active' : '' ?>">
+                                    <a class="page-link" href="?pag=<?= $i ?>"><?= $i ?></a>
+                                </li>
+                            <?php endfor ?>
+                                <li class="page-item <?= ($pag >= $npags) ? 'disabled' : '' ?>">
+                                    <a class="page-link" href="?pag=<?= $pag + 1 ?>">Siguiente</a>
+                                </li>
+                        </li>
+                        </ul>
+                    </nav>
+                </div>
+                
+            </div>
+        </div>
+        <?php
+
+    }
+
+    function recogerNumPag()
+    {
+        if (isset($_GET['pag']) && ctype_digit($_GET['pag'])) {
+            $pag = trim($_GET['pag']);
+            unset($_GET['pag']);
+        } else {
+            $pag = 1;
+        }
+        
+        return $pag;
+    }
+
+    function contarFilas($pdo)
+    {
+        $sent = $pdo->prepare('SELECT count(*)
+                                FROM clines l
+                                JOIN (SELECT id AS idcliente, nombre
+                                        FROM clientes) c
+                                        ON l.cliente_id = c.idcliente');
+        $sent->execute();
+        $count = $sent->fetchColumn();
+        return $count;
     }
 
     

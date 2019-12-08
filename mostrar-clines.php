@@ -24,20 +24,25 @@ if (!isset($_SESSION['login'])){
   </head>
   <body>
     <?php
+        
         require __DIR__ . '/auxiliar.php';
+        
         mostrarMenu();
 
         $pdo = conectar();
-        /*const PAR_URL = ['titulo' => '', 'paginas' => '' ];
-        $errores = [];
-        $parametros = comprobarParametros(PAR_URL, $errores);
-        comprobarValores($parametros,$errores);*/
-        $sent = $pdo->query('SELECT id, servidor, puerto, usuario, password, fecha_alta, nombre
-                                FROM clines l
-                                    JOIN (SELECT id AS idcliente, nombre
-                                            FROM clientes) c
-                                            ON l.cliente_id = c.idcliente
-                                    WHERE true');
+        $pag = recogerNumPag();                    // Pagina actual
+        $sql = 'SELECT id, servidor, puerto, usuario, password, fecha_alta, nombre 
+                    FROM clines l
+                    JOIN (SELECT id AS idcliente, nombre
+                            FROM clientes) c
+                            ON l.cliente_id = c.idcliente
+                    WHERE true ORDER BY id LIMIT '. FPP .' OFFSET ' . ($pag - 1) * FPP;
+
+        $sent = $pdo->prepare($sql);
+        $sent->execute();
+
+        $nfilas= contarFilas($pdo); 
+        $npags = ceil($nfilas / FPP);          
         
     ?>
 
@@ -78,6 +83,10 @@ if (!isset($_SESSION['login'])){
                 </tr>            
             <?php endforeach ?> 
         </table>
+
+        <?php
+        mostrarPaginador($pag, $npags);
+        ?>
         
     </div>
 
