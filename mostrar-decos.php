@@ -67,7 +67,7 @@ if (!isset($_SESSION['login'])){
                                 <input type="hidden" name="id" value="<?=$v['id']?>">
                                 <button type="submit"  class="btn btn-danger btn-sm active eliminar">Eliminar</button>
                             </form> 
-                            <a href="modificar.php?id=<?=$v['id']?>"><button class="btn btn-success btn-sm active mb-0 mt-0">Modificar</button></a>
+                            <a href="modificar-deco.php?id=<?=$v['id']?>"><button class="btn btn-success btn-sm active mb-0 mt-0">Modificar</button></a>
                                 
                         </td>
                 </tbody>

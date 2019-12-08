@@ -219,9 +219,9 @@
 
         if ($puerto !== '') {
             if (!ctype_digit($puerto)) {
-                $errores['puerto'] = 'El número de puerto debe ser un número entero positivo.';
+                $errores['puerto'] = 'El puerto debe ser un número entero positivo.';
             } elseif (mb_strlen($puerto) > 5) {
-                $errores['puerto'] = 'El número no puede tener más de 4 dígitos.';
+                $errores['puerto'] = 'El puerto no puede tener más de 4 dígitos.';
             } elseif ($puerto > 65536 || $puerto <= 1024) {
                 $errores['puerto'] = 'El puerto debe estar comprendido entre 1024 y 65536';
             }

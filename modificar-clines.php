@@ -19,42 +19,60 @@ if (!isset($_SESSION['login'])){
     <!-- Material Design for Bootstrap CSS -->
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
     <link rel="stylesheet" href="css/main.css">
+
     <title>Inicio instaladores</title>
   </head>
   <body>
     <?php
         require __DIR__ . '/auxiliar.php';
         mostrarMenu();
+
         $pdo = conectar();
+        $id = trim($_GET['id']);
         const PAR_URL = [
-                            'servidor' => ''
-                          , 'puerto' => '' 
-                          , 'usuario' => '' 
-                          , 'password' => '' 
-                          , 'fecha_alta' => '' 
-                          , 'cliente' => ''
-                          ,
-                        ];
+            'servidor' => ''
+          , 'puerto' => '' 
+          , 'usuario' => '' 
+          , 'password' => '' 
+          , 'fecha_alta' => '' 
+          , 'cliente' => ''
+          ,
+        ];
         $errores = [];
         $parametros = comprobarParametrosInsertar(PAR_URL, $errores);
         comprobarValoresInsertar($parametros,$errores,$pdo);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($errores)) {
-            $sent = $pdo->prepare('INSERT
-                                     INTO clines (servidor, puerto, usuario, password, fecha_alta, cliente_id)
-                                   VALUES (:servidor, :puerto, :usuario, :password, :fecha_alta, :cliente)');
-            $sent->execute($parametros);
-            alert('La fila se ha insertado correctamente.');
-            
+        $sent = $pdo->prepare('UPDATE clines
+                                 SET servidor = :servidor
+                                    , puerto = :puerto
+                                    , usuario = :usuario
+                                    , password = :password
+                                    , fecha_alta = :fecha_alta
+                                    , cliente_id = :cliente
+                                 WHERE id = :id');
+        $parametros['id']=$id;
+        $sent->execute($parametros);
+        alert('La fila se ha modificado correctamente.');
         }
-    
-        
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            $sent = $pdo->prepare('SELECT *
+                                     FROM clines
+                                    WHERE id = :id');
+            $sent->execute(['id' => $id]);
+            //$parametros = $sent->fetch(PDO::FETCH_ASSOC);
+            if (($parametros = $sent->fetch(PDO::FETCH_ASSOC)) === false) {
+                //aviso('Error al modificar fila.', 'danger');
+                header('Location: index.php');
+                return;
+            }
+        }
     ?>
 
     <div class="container">
         <div class="row">
             <div class="col-6 offset-3 mt-5 p-3" style="box-shadow: 2px 2px 10px #666;">
-            <h2>Insertar cline</h2><hr>
+            <h2>Modificar cccam</h2><hr>
             <form  action="" method="post">
                 <div class="form-group">
                     <label>Servidor</label>
@@ -127,15 +145,12 @@ if (!isset($_SESSION['login'])){
                  </div>
                 
                 
-                <button type="submit" class="btn btn-dark active">Insertar</button>
+                <button type="submit" class="btn btn-dark active">Modificar </button>
             </form>
         </div>
         
     </div>
-
-            
-
-
+        
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -144,12 +159,17 @@ if (!isset($_SESSION['login'])){
     <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
     <script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>
     <script>
-        eliminar.onclick = function() {
-            if(!confirm('¿Seguro que quieres eliminar?')) {
-                return false;
-            };
-            return true;
-            
+
+        var eliminar = document.getElementsByClassName('eliminar');
+        for (let i = 0; i < eliminar.length; i++) {
+             
+            eliminar[i].onclick = function() {
+                if(!confirm('¿Seguro que quieres eliminar?')) {
+                    return false;
+                };
+                return true;
+                
+            }
         }
     </script>
   </body>
