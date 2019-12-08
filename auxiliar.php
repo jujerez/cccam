@@ -1,4 +1,5 @@
 <?php
+
     function alert($mensaje, $tipo = 'alert-success')
     { 
     ?>
@@ -60,7 +61,14 @@
         ?>
 
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="#">Bienvenido <?=$_SESSION['login']?></a>
+            <a class="navbar-brand" href="#">
+
+                <?php if(isset($_SESSION['login'])): ?>
+                    Bienvenido <?=$_SESSION['login']?>
+                <?php else: ?>
+                    Logueate
+                <?php endif ?>
+            </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -70,16 +78,36 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="index.php">Inicio <span class="sr-only">(current)</span></a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="insertar-cliente.php">Clientes</a>
+                
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Clientes
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="mostrar-clientes.php">Mostrar clientes</a>
+                            <a class="dropdown-item" href="insertar-cliente.php">Añadir cliente</a>
+                        </div>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="insertar-cline.php">Clines</a>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Clines
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="mostrar-clines.php">Mostrar clines</a>
+                            <a class="dropdown-item" href="insertar-cline.php">Añadir clines</a>
+                        </div>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="insertar-decodificador.php">Descodficadores</a>
-                    </li>
-                      
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Descodificador
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="mostrar-decodificador.php">Mostrar decos</a>
+                            <a class="dropdown-item" href="insertar-decodificador.php">Añadir deco</a>
+                        </div>
+                    </li>                      
                 </ul>
                 
             </div>
@@ -284,7 +312,7 @@
 
     }
 
-    function comprobarValoresDeco($args, &$errores)
+    function comprobarValoresDeco($args, &$errores, $pdo)
     {
         if (!empty($errores) || empty($_POST)) {
             return;
@@ -386,6 +414,8 @@
             return '';
         }
     }
+
+    
 
 
 

@@ -37,7 +37,7 @@ if (!isset($_SESSION['login'])){
                         ];
         $errores = [];
         $parametros = comprobarParametrosInsertar(PAR_URL, $errores);
-        comprobarValoresDeco($parametros,$errores);
+        comprobarValoresDeco($parametros,$errores, $pdo);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($errores)) {
             $sent = $pdo->prepare('INSERT
