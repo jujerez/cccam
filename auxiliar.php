@@ -104,7 +104,7 @@
                         Descodificador
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="mostrar-decodificador.php">Mostrar decos</a>
+                            <a class="dropdown-item" href="mostrar-decos.php">Mostrar decos</a>
                             <a class="dropdown-item" href="insertar-decodificador.php">Añadir deco</a>
                         </div>
                     </li>                      
