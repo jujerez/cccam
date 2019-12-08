@@ -169,7 +169,7 @@
         <?php
     }
 
-    function borrarFila($pdo, $tabla, $id)
+    function borrarFila($pdo, $tabla, $id, $anterior)
     {
         $sent = $pdo->prepare("DELETE
                                 FROM $tabla
@@ -178,10 +178,12 @@
 
         if ($sent->rowCount() === 1) {
             echo 'Fila borrada correctamente';
-            header('Location: index.php');
+            
+            //header("Location:".$_SERVER['HTTP_REFERER']); 
+            header("Location: $anterior"); 
         } else {
             //alert('Ha ocurrido un error inesperado.', 'danger');
-            echo('Ha ocurrio un error inesperado');
+            echo('Ha ocurrio un error inesperado, posiblemente este violando una restricción al borrar');
         }
     }
 

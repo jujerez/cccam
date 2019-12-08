@@ -24,8 +24,8 @@
     <?php
         require __DIR__ .'/auxiliar.php' ;
         $pdo = conectar();
-        $id = $_POST['id'];
-        borrarFila($pdo,'clines', $id );
+        $id = trim($_POST['id']);
+        borrarFila($pdo,'descodificadores', $id, 'mostrar-decos.php');
     ?>
   
 

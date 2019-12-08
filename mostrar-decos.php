@@ -63,7 +63,7 @@ if (!isset($_SESSION['login'])){
                         <td><?=$v['lugar_compra']?></td>
                         <td><?=$v['nombre']?></td>
                         <td class="p-1">  
-                            <form action="eliminar.php" method="post" class="mb-0">
+                            <form action="eliminar-deco.php" method="post" class="mb-0">
                                 <input type="hidden" name="id" value="<?=$v['id']?>">
                                 <button type="submit"  class="btn btn-danger btn-sm active eliminar">Eliminar</button>
                             </form> 
