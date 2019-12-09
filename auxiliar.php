@@ -38,6 +38,7 @@
                   if ($_POST['password']!=='') {
                       if (password_verify($_POST['password'], $fila['password'])) {
                         $_SESSION['login']= $nick;
+                        $_SESSION['token']= md5(uniqid(mt_rand(), true)); 
                           header('Location: index.php');
                           return;
                       } else {
@@ -590,6 +591,24 @@
         function h($cadena)
         {
             return htmlspecialchars($cadena, ENT_QUOTES | ENT_SUBSTITUTE);
+        }
+
+        function tokenValido($_csrf)
+        {
+            if ($_csrf !== null) {
+                return $_csrf === $_SESSION['token'];
+            }
+            return false;
+        }
+
+        function token_csrf()
+        {
+            if (isset($_SESSION['token'])) {
+                $token = $_SESSION['token'];
+                return <<<EOT
+                    <input type="hidden" name="_csrf" value="$token">
+                EOT;
+            }
         }
 
 

@@ -35,24 +35,37 @@ if (!isset($_SESSION['login'])){
                           ,
                         ];
         $errores = [];
+
+        $_csrf = (isset($_POST['_csrf'])) ? $_POST['_csrf'] : null;
+        unset($_POST['_csrf']);
+
         $parametros = comprobarParametrosInsertar(PAR_URL, $errores);
         comprobarValoresClientes($parametros,$errores);
-
+   
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($errores)) {
-            $sent = $pdo->prepare('INSERT
-                                     INTO clientes (nombre, telefono, direccion, nota)
-                                   VALUES (:nombre, :telefono, :direccion, :nota)');
+            
+            if (!tokenValido($_csrf)) {
+                alert('El token de CSRF no es válido.', 'alert-danger');
+                
+            } else {
 
-            $sent->execute([ 'nombre' => $parametros['nombre']
-                           , 'telefono' => $parametros['telefono']
-                           , 'direccion' => $parametros['direccion'] ?: null
-                           , 'nota' => $parametros['nota'] ?: null
-                       
-            ]);
-            alert('La fila se ha insertado correctamente.');
-
+                $sent = $pdo->prepare('INSERT
+                                            INTO clientes (nombre, telefono, direccion, nota)
+                                        VALUES (:nombre, :telefono, :direccion, :nota)');
+    
+                $sent->execute([ 'nombre' => $parametros['nombre']
+                                , 'telefono' => $parametros['telefono']
+                                , 'direccion' => $parametros['direccion'] ?: null
+                                , 'nota' => $parametros['nota'] ?: null
+                            
+                ]);
+                alert('La fila se ha insertado correctamente.');
+    
+            }
             
         }
+    
+
     
         
     ?>
@@ -103,6 +116,8 @@ if (!isset($_SESSION['login'])){
                            >   
                            <?=mensajeError('nota',$errores)?> 
                 </div>
+
+                <?=token_csrf()?>
   
                 <button type="submit" class="btn btn-dark active">Insertar</button>
             </form>
