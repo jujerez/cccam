@@ -18,8 +18,8 @@
   <body>
     <?php
         require __DIR__ .'/auxiliar.php' ;
-        mostrarMenu();
         compruebaLogin();
+        mostrarMenu();
         mostrarFormularioLogin(); 
     ?>
 

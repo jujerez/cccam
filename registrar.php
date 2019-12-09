@@ -33,7 +33,7 @@ session_start();
         $errores = [];
         $parametros = comprobarParametrosInsertar(PAR_URL, $errores);
         comprobarValoresRegistrar($parametros,$pdo,$errores);
-        mostrarMenu();
+        
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($errores)) {
             $sent = $pdo->prepare('INSERT
@@ -50,7 +50,7 @@ session_start();
 
             
         }
-        
+        mostrarMenu();
         formRegistrar($parametros,$errores);
         
     ?>
