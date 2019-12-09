@@ -50,17 +50,17 @@ if (!isset($_SESSION['login'])){
             <?php foreach ($sent as $fila => $v): ?>
                 <tr>
                     <tbody>
-                        <td><?=$v['nombre']?></td>
-                        <td><?=$v['direccion']?></td>
-                        <td><?=$v['telefono']?></td>
-                        <td><?=$v['nota']?></td>
+                        <td><?=h($v['nombre'])?></td>
+                        <td><?=h($v['direccion'])?></td>
+                        <td><?=h($v['telefono'])?></td>
+                        <td><?=h($v['nota'])?></td>
                        
                         <td class="p-1">  
                             <form action="eliminar-cliente.php" method="post" class="mb-0">
-                                <input type="hidden" name="id" value="<?=$v['id']?>">
+                                <input type="hidden" name="id" value="<?=h($v['id'])?>">
                                 <button type="submit"  class="btn btn-danger btn-sm active eliminar">Eliminar</button>
                             </form> 
-                            <a href="modificar-cliente.php?id=<?=$v['id']?>"><button class="btn btn-success btn-sm active mb-0 mt-0">Modificar</button></a>
+                            <a href="modificar-cliente.php?id=<?=h($v['id'])?>"><button class="btn btn-success btn-sm active mb-0 mt-0">Modificar</button></a>
                                 
                         </td>
                 </tbody>

@@ -69,7 +69,7 @@ if (!isset($_SESSION['login'])){
                         type="text" 
                         class="form-control <?=esValido('nombre',$errores)?>"                        
                         name="nombre" 
-                        value="<?=$parametros['nombre']?>"    
+                        value="<?=h($parametros['nombre'])?>"    
                     > 
                    <?=mensajeError('nombre',$errores)?> 
                 </div>
@@ -79,7 +79,7 @@ if (!isset($_SESSION['login'])){
                     <input type="number" 
                            class="form-control <?=esValido('telefono',$errores)?>" 
                            name="telefono" 
-                           value="<?=$parametros['telefono']?>"
+                           value="<?=h($parametros['telefono'])?>"
                     > 
                     <?=mensajeError('telefono',$errores)?>    
                 </div>
@@ -89,7 +89,7 @@ if (!isset($_SESSION['login'])){
                     <input type="text" 
                            class="form-control <?=esValido('direccion',$errores)?>" 
                            name="direccion" 
-                           value="<?=$parametros['direccion']?>"
+                           value="<?=h($parametros['direccion'])?>"
                     >   
                     <?=mensajeError('direccion',$errores)?> 
                 </div>
@@ -99,7 +99,7 @@ if (!isset($_SESSION['login'])){
                     <input type="text" 
                            class="form-control <?=esValido('nota',$errores)?>" 
                            name="nota" 
-                           value="<?=$parametros['nota']?>"
+                           value="<?=h($parametros['nota'])?>"
                            >   
                            <?=mensajeError('nota',$errores)?> 
                 </div>
