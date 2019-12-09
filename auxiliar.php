@@ -5,7 +5,7 @@
     ?>
         <div class="container">
             <div class="row">
-                <div class="col-6 offset-3">
+                <div class="col-6 offset-3 mt-5">
                     
                     <div class="alert <?=$tipo?>" role="alert">
                         <?=$mensaje?>
@@ -43,14 +43,14 @@
                       } else {
                   
                   // "Contraseña incorrecta";
-                          alert('Usuario o contraseña invalida', 'danger');
+                          alert('Usuario o contraseña invalida', 'alert-danger');
                       }
                   } else {
-                      alert('La contraseña no puede estar vacía', 'danger');
+                      alert('La contraseña no puede estar vacía', 'alert-danger');
                   }
               } else {
                   // El usuario no existe
-                  alert('Usuario o contraseña invalida', 'danger');
+                  alert('Usuario o contraseña invalida', 'alert-danger');
               }
             }
     }
@@ -125,7 +125,7 @@
                       <?php endif?>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Registrarse</a>
+                        <a class="nav-link text-white" href="registrar.php">Registrarse</a>
                     </li> 
                 </ul>
 
@@ -140,7 +140,7 @@
         ?>
         <div class="container ">
             <div class="row mt-5 p-5">
-                <div class="col-6 offset-3 p-5 borde-sombreado">
+                <div class="col-6 offset-3 p-5" style="box-shadow: 2px 2px 10px #666;">
                 
                     <form action="" method="post">
                         <div class="form-group">
@@ -469,6 +469,123 @@
         $count = $sent->fetchColumn();
         return $count;
     }
+
+    function formRegistrar($parametros, $errores) 
+    {
+        ?>
+          <div class="container">
+              <div class="row">
+                  <div class="col-6 offset-3 borde-sombreado p-5 mt-5 " style="box-shadow: 2px 2px 10px #666;">
+                  <h2>Formulario de registro</h2><hr>
+                  <form action="" method="post">
+
+
+                        <div class="form-group">
+                            <label>Usuario</label>
+                            <input type="text" 
+                                   class="form-control <?=esValido('nick', $errores)?>"  
+                                   name="nick" 
+                                   value="<?=$parametros['nick']?>"
+                            >
+                            <?=mensajeError('nick',$errores)?> 
+                        </div>
+
+
+                        <div class="form-group">
+                            <label>Contraseña</label>
+                            <div class="input-group-append">
+                                <input 
+                                    type="password" 
+                                    class="form-control <?=esValido('password',$errores)?> " 
+                                    name="password" 
+                                    value="<?=$parametros['password']?>"
+                                >
+                                <?=mensajeError('password',$errores)?> 
+                                    <button id="showpassword" class="btn btn-primary" type="button">
+                                    <i class="material-icons">remove_red_eye</i>
+                                    </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label> Repetir contraseña</label>
+                            <div class="input-group-append">
+                            <input 
+                                type="password" 
+                                class="form-control <?=esValido('password_confirm',$errores)?>" 
+                                name="password_confirm" 
+                            >
+                            <?=mensajeError('password_confirm',$errores)?> 
+                                <button id="showpassword" class="btn btn-primary" type="button">
+                                <i class="material-icons">remove_red_eye</i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input 
+                                type="email" 
+                                class="form-control <?=esValido('email',$errores)?>" 
+                                name="email" 
+                                aria-describedby="emailHelp"
+                           >
+                           <?=mensajeError('email',$errores)?> 
+                            
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary active">Registrar</button>
+                    </form> 
+                  </div>
+                  
+              </div>
+          </div>  
+        <?php
+    }
+
+    function comprobarValoresRegistrar(&$args, $pdo, &$errores)
+        {
+            if (!empty($errores) || empty($_POST)) {
+                return;
+            }
+            extract($args);
+            if (isset($args['nick'])) {
+                if ($nick === '') {
+                    $errores['nick'] = 'El nick de usuario es obligatorio.';
+                } elseif (mb_strlen($nick) > 255) {
+                    $errores['nick'] = 'El nick de usuario no puede tener más de 255 caracteres.';
+                }  else {
+                    // Comprobar si el usuario existe
+                    $sent = $pdo->prepare('SELECT *
+                                             FROM usuarios
+                                            WHERE nick = :nick');
+                    $sent->execute(['nick' => $nick]);
+                    if (($fila = $sent->fetch()) !== false) {
+                        $errores['nick'] = 'Ese usuario ya existe.';
+                    }
+                }
+            }
+            
+            if (isset($args['password'])) {
+                if ($password === '') {
+                    $errores['password'] = 'La contraseña es obligatoria.';
+                }
+            }
+            if (isset($args['password_confirm'])) {
+                if ($password_confirm === '') {
+                    $errores['password_confirm'] = 'La confirmación de contraseña es obligatoria.';
+                } elseif ($password !== $password_confirm) {
+                    $errores['password_confirm'] = 'Las contraseñas no coinciden.';
+                }
+            }
+
+            if (isset($args['email'])) {
+                if ($email !== '' && !filter_var($args['email'], FILTER_VALIDATE_EMAIL)) {
+                    $errores['email'] = 'La dirección de e-mail no es válida.';
+                }
+            }
+           
+        }
 
     
 
