@@ -58,6 +58,7 @@ if (!isset($_SESSION['login'])){
                     <th scope="col">Password</th>
                     <th scope="col">Fecha</th>
                     <th scope="col">Cliente</th>
+                    <th scope="col">Media Puertos</th>
                     <th scope="col">Accion</th>
                 </tr>
             </thead>
@@ -71,6 +72,8 @@ if (!isset($_SESSION['login'])){
                         <td><?=$v['password']?></td>
                         <td><?=$v['fecha_alta']?></td>
                         <td><?=$v['nombre']?></td>
+                        <td></td>
+                        
                         <td class="p-1">  
                             <form action="eliminar-clines.php" method="post" class="mb-0">
                                 <input type="hidden" name="id" value="<?=$v['id']?>">
@@ -82,6 +85,11 @@ if (!isset($_SESSION['login'])){
                 </tbody>
                 </tr>            
             <?php endforeach ?> 
+            <tr>
+                <td colspan="6"></td>
+                <th><?=getMediaPuerto()?></th>
+                <td></td>
+            </tr>
         </table>
 
         <?php
