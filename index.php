@@ -22,7 +22,12 @@ session_start();
   <body>
     <?php
         require __DIR__ . '/auxiliar.php';
+
         mostrarMenu();
+        if(!isset($_COOKIE['aceptar'])) {
+
+          alert('Este sitio usa cookies. <a href="cookies.php">Estoy de acuerdo</a>', 'alert-danger');
+        }
         
     ?>
 
