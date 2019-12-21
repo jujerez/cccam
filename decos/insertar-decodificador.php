@@ -41,10 +41,20 @@ if (!isset($_SESSION['login'])){
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($errores)) {
             $sent = $pdo->prepare('INSERT
-                                     INTO descodificadores (marca, modelo, serial, fecha_compra, lugar_compra, cliente_id)
-                                   VALUES (:marca, :modelo, :serial, :fecha_compra, :lugar_compra, :cliente)');
-            $sent->execute($parametros);
-            alert('La fila se ha insertado correctamente.');
+                                     INTO descodificadores (marca, modelo, serial, fecha_compra, lugar_compra, cliente_id, usuario_id)
+                                   VALUES (:marca, :modelo, :serial, :fecha_compra, :lugar_compra, :cliente, :id)');
+            
+            $res = $sent->execute([
+                'marca'        => $parametros['marca'],
+                'modelo'       => $parametros['modelo'],
+                'serial'       => $parametros['serial'],
+                'fecha_compra' => $parametros['fecha_compra'],
+                'lugar_compra' => $parametros['lugar_compra'],
+                'cliente'      => $parametros['cliente'],
+                'id'           => $_SESSION['id']
+            ]);
+            $res ? alert('El deco se ha insertado correctamente.') 
+                 : alert('Error al insertar.', 'alert-danger');
             
         }
     
