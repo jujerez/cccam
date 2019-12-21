@@ -41,10 +41,21 @@ if (!isset($_SESSION['login'])){
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($errores)) {
             $sent = $pdo->prepare('INSERT
-                                     INTO clines (servidor, puerto, usuario, password, fecha_alta, cliente_id)
-                                   VALUES (:servidor, :puerto, :usuario, :password, :fecha_alta, :cliente)');
-            $sent->execute($parametros);
-            alert('La fila se ha insertado correctamente.');
+                                     INTO clines (servidor, puerto, usuario, password, fecha_alta, cliente_id, usuario_id)
+                                   VALUES (:servidor, :puerto, :usuario, :password, :fecha_alta, :cliente, :id)');
+            $res = $sent->execute([
+                'servidor'   => $parametros['servidor'],
+                'puerto'     => $parametros['puerto'],
+                'usuario'    => $parametros['usuario'],
+                'password'   => $parametros['password'],
+                'fecha_alta' => $parametros['fecha_alta'],
+                'cliente'    => $parametros['cliente'],
+                'id'         => $_SESSION['id']
+            ]);
+
+            $res ? alert('La cline se ha insertado correctamente.') 
+                 : alert('Error al insertar.', 'alert-danger');
+            
             
         }
     
@@ -108,10 +119,11 @@ if (!isset($_SESSION['login'])){
                 </div>
 
                 <?php
-                    $sent = $pdo->query('SELECT *
+                    $sent = $pdo->prepare('SELECT *
                                             FROM clientes
-                                            WHERE true;
+                                            WHERE usuario_id = :id;
                                                 ');
+                    $sent->execute(['id' => $_SESSION['id']]);
                 ?>
 
 

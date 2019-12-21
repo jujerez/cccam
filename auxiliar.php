@@ -38,6 +38,7 @@
                   if ($_POST['password']!=='') {
                       if (password_verify($_POST['password'], $fila['password'])) {
                         $_SESSION['login']= $nick;
+                        $_SESSION['id'] = $fila['id'];
                         $_SESSION['token']= md5(uniqid(mt_rand(), true)); 
                           header('Location: /index.php');
                           return;

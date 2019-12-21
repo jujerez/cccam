@@ -39,26 +39,31 @@ if (!isset($_SESSION['login'])){
         $_csrf = (isset($_POST['_csrf'])) ? $_POST['_csrf'] : null;
         unset($_POST['_csrf']);
 
+        
+
         $parametros = comprobarParametrosInsertar(PAR_URL, $errores);
         comprobarValoresClientes($parametros,$errores);
    
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($errores)) {
             
             if (!tokenValido($_csrf)) {
-                alert('El token de CSRF no es válido.', 'alert-danger');
+               // alert('El token de CSRF no es válido.', 'alert-danger');
+                alert('Error interno del servidor.', 'alert-danger');
                 
             } else {
 
                 $sent = $pdo->prepare('INSERT
-                                            INTO clientes (nombre, telefono, direccion, nota)
-                                        VALUES (:nombre, :telefono, :direccion, :nota)');
+                                            INTO clientes (nombre, telefono, direccion, nota, usuario_id)
+                                        VALUES (:nombre, :telefono, :direccion, :nota, :usuario_id)');
     
                 $sent->execute([ 'nombre' => $parametros['nombre']
                                 , 'telefono' => $parametros['telefono']
                                 , 'direccion' => $parametros['direccion'] ?: null
                                 , 'nota' => $parametros['nota'] ?: null
+                                , 'usuario_id' => $_SESSION['id']
                             
                 ]);
+                
                 alert('La fila se ha insertado correctamente.');
     
             }

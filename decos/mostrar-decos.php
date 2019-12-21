@@ -28,12 +28,15 @@ if (!isset($_SESSION['login'])){
         mostrarMenu();
 
         $pdo = conectar();
-        $sent = $pdo->query('SELECT id, marca, modelo, serial, fecha_compra, lugar_compra, nombre
+        $sent = $pdo->prepare('SELECT id, marca, modelo, serial, fecha_compra, lugar_compra, nombre
                                 FROM descodificadores d
                                     JOIN (SELECT id AS idcliente, nombre
                                             FROM clientes) c
                                             ON d.cliente_id = c.idcliente
-                                    WHERE true');
+                                    WHERE usuario_id = :id');
+        $sent->execute([
+            'id' => $_SESSION['id'],
+        ])
         
     ?>
 
