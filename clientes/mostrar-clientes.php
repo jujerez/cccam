@@ -27,10 +27,10 @@ if (!isset($_SESSION['login'])){
         require __DIR__ . '/../auxiliar.php';
         mostrarMenu();
 
-        $pdo = conectar();
-        
-        $sent = $pdo->query('SELECT * FROM clientes');
-        
+        $pdo = conectar();  
+        $sent = $pdo->prepare('SELECT * FROM clientes WHERE usuario_id = :usuario_id');
+        $sent->execute([ 'usuario_id' => $_SESSION['id'] ]);
+      
     ?>
 
     <div class="container">

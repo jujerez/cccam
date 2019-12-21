@@ -22,6 +22,7 @@ session_start();
   <body>
     <?php
         require __DIR__ . '/../auxiliar.php';
+        mostrarMenu();
         $pdo = conectar();
         const PAR_URL = [
                             'nick' => ''
@@ -50,7 +51,7 @@ session_start();
 
             
         }
-        mostrarMenu();
+        
         formRegistrar($parametros,$errores);
         
     ?>
