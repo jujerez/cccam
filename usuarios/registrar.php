@@ -21,7 +21,7 @@ session_start();
   </head>
   <body>
     <?php
-        require __DIR__ . '/auxiliar.php';
+        require __DIR__ . '/../auxiliar.php';
         $pdo = conectar();
         const PAR_URL = [
                             'nick' => ''
