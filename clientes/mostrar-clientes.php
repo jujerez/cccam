@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['login'])){
-    header('Location: login.php');
+    header('Location: /usuarios/login.php');
     return;
 }
 ?>
@@ -20,20 +20,16 @@ if (!isset($_SESSION['login'])){
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
     <link rel="stylesheet" href="css/main.css">
 
-    <title>Inicio instaladores</title>
+    <title>Mostrar clientes</title>
   </head>
   <body>
     <?php
-        require __DIR__ . '/auxiliar.php';
+        require __DIR__ . '/../auxiliar.php';
         mostrarMenu();
 
         $pdo = conectar();
-        $sent = $pdo->query('SELECT id, marca, modelo, serial, fecha_compra, lugar_compra, nombre
-                                FROM descodificadores d
-                                    JOIN (SELECT id AS idcliente, nombre
-                                            FROM clientes) c
-                                            ON d.cliente_id = c.idcliente
-                                    WHERE true');
+        
+        $sent = $pdo->query('SELECT * FROM clientes');
         
     ?>
 
@@ -43,31 +39,28 @@ if (!isset($_SESSION['login'])){
             <table class="table table-bordered">
             <thead class="thead-oscuro">
                 <tr>
-                    <th scope="col">Marca</th>
-                    <th scope="col">Modelo</th>
-                    <th scope="col">Serial</th>
-                    <th scope="col">Fecha compra</th>
-                    <th scope="col">Lugar de compra</th>
-                    <th scope="col">Cliente</th>
-                    <th scope="col">Accion</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Teléfono</th>
+                    <th scope="col">Dirección</th>
+                    <th scope="col">Nota</th>
+                    <th scope="col">Acción</th>
                 </tr>
             </thead>
             
             <?php foreach ($sent as $fila => $v): ?>
                 <tr>
                     <tbody>
-                        <td><?=$v['marca']?></td>
-                        <td><?=$v['modelo']?></td>
-                        <td><?=$v['serial']?></td>
-                        <td><?=$v['fecha_compra']?></td>
-                        <td><?=$v['lugar_compra']?></td>
-                        <td><?=$v['nombre']?></td>
+                        <td><?=h($v['nombre'])?></td>
+                        <td><?=h($v['direccion'])?></td>
+                        <td><?=h($v['telefono'])?></td>
+                        <td><?=h($v['nota'])?></td>
+                       
                         <td class="p-1">  
-                            <form action="eliminar-deco.php" method="post" class="mb-0">
-                                <input type="hidden" name="id" value="<?=$v['id']?>">
+                            <form action="eliminar-cliente.php" method="post" class="mb-0">
+                                <input type="hidden" name="id" value="<?=h($v['id'])?>">
                                 <button type="submit"  class="btn btn-danger btn-sm active eliminar">Eliminar</button>
                             </form> 
-                            <a href="modificar-deco.php?id=<?=$v['id']?>"><button class="btn btn-success btn-sm active mb-0 mt-0">Modificar</button></a>
+                            <a href="modificar-cliente.php?id=<?=h($v['id'])?>"><button class="btn btn-success btn-sm active mb-0 mt-0">Modificar</button></a>
                                 
                         </td>
                 </tbody>
@@ -76,10 +69,6 @@ if (!isset($_SESSION['login'])){
         </table>
         
     </div>
-
-            
-
-
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

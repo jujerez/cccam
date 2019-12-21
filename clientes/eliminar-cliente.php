@@ -1,5 +1,10 @@
-<?php session_start() ?>
-
+<?php 
+    session_start();
+    if (!isset($_SESSION['login'])){
+        header('Location: /usuarios/login.php');
+        return;
+    }
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -17,11 +22,12 @@
   </head>
   <body>
     <?php
-        require __DIR__ .'/auxiliar.php' ;
-        compruebaLogin();
-        mostrarMenu();
-        mostrarFormularioLogin(); 
+        require __DIR__ .'/../auxiliar.php' ;
+        $pdo = conectar();
+        $id = trim($_POST['id']);
+        borrarFila($pdo,'clientes', $id, 'mostrar-clientes.php' );
     ?>
+  
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -29,13 +35,6 @@
     <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
     <script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>
+    
   </body>
 </html>
-
-          
-            
-                
-            
-           
-
-         

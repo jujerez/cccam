@@ -1,7 +1,7 @@
 <?php 
     session_start();
     if (!isset($_SESSION['login'])){
-        header('Location: login.php');
+        header('Location: /usuarios/login.php');
         return;
     }
 ?>
@@ -22,10 +22,10 @@
   </head>
   <body>
     <?php
-        require __DIR__ .'/auxiliar.php' ;
+        require __DIR__ .'/../auxiliar.php' ;
         $pdo = conectar();
         $id = trim($_POST['id']);
-        borrarFila($pdo,'clientes', $id, 'mostrar-clientes.php' );
+        borrarFila($pdo,'descodificadores', $id, 'mostrar-decos.php');
     ?>
   
 

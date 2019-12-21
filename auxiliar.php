@@ -39,7 +39,7 @@
                       if (password_verify($_POST['password'], $fila['password'])) {
                         $_SESSION['login']= $nick;
                         $_SESSION['token']= md5(uniqid(mt_rand(), true)); 
-                          header('Location: index.php');
+                          header('Location: /index.php');
                           return;
                       } else {
                   
@@ -77,7 +77,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="index.php">Inicio <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="/index.php">Inicio <span class="sr-only">(current)</span></a>
                     </li>
                 
                     <li class="nav-item dropdown">
@@ -85,8 +85,8 @@
                         Clientes
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="mostrar-clientes.php">Mostrar clientes</a>
-                            <a class="dropdown-item" href="insertar-cliente.php">Añadir cliente</a>
+                            <a class="dropdown-item" href="/clientes/mostrar-clientes.php">Mostrar clientes</a>
+                            <a class="dropdown-item" href="/clientes/insertar-cliente.php">Añadir cliente</a>
                         </div>
                     </li>
 
@@ -95,8 +95,8 @@
                         Clines
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="mostrar-clines.php">Mostrar clines</a>
-                            <a class="dropdown-item" href="insertar-cline.php">Añadir clines</a>
+                            <a class="dropdown-item" href="/clines/mostrar-clines.php">Mostrar clines</a>
+                            <a class="dropdown-item" href="/clines/insertar-cline.php">Añadir clines</a>
                         </div>
                     </li>
 
@@ -105,8 +105,8 @@
                         Descodificador
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="mostrar-decos.php">Mostrar decos</a>
-                            <a class="dropdown-item" href="insertar-decodificador.php">Añadir deco</a>
+                            <a class="dropdown-item" href="/decos/mostrar-decos.php">Mostrar decos</a>
+                            <a class="dropdown-item" href="/decos/insertar-decodificador.php">Añadir deco</a>
                         </div>
                     </li>                      
                 </ul>
@@ -119,14 +119,14 @@
                     
                     <li class="nav-item">
                       <?php if (isset($_SESSION['login'])):?>
-                        <a class="nav-link text-white" href="logout.php">Logout<span class="sr-only">(current)</span></a>
+                        <a class="nav-link text-white" href="/usuarios/logout.php">Logout<span class="sr-only">(current)</span></a>
                       <?php else:?>
 
-                        <a class="nav-link text-white" href="login.php">Login<span class="sr-only">(current)</span></a>
+                        <a class="nav-link text-white" href="/usuarios/login.php">Login<span class="sr-only">(current)</span></a>
                       <?php endif?>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="registrar.php">Registrarse</a>
+                        <a class="nav-link text-white" href="/usuarios/registrar.php">Registrarse</a>
                     </li> 
                 </ul>
 

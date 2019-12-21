@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['login'])){
-    header('Location: login.php');
+    header('Location: /usuarios/login.php');
     return;
 }
 ?>
@@ -23,26 +23,26 @@ if (!isset($_SESSION['login'])){
   </head>
   <body>
     <?php
-        require __DIR__ . '/auxiliar.php';
+        require __DIR__ . '/../auxiliar.php';
         mostrarMenu();
         $pdo = conectar();
         const PAR_URL = [
-                            'marca' => ''
-                          , 'modelo' => '' 
-                          , 'serial' => '' 
-                          , 'fecha_compra' => '' 
-                          , 'lugar_compra' => '' 
+                            'servidor' => ''
+                          , 'puerto' => '' 
+                          , 'usuario' => '' 
+                          , 'password' => '' 
+                          , 'fecha_alta' => '' 
                           , 'cliente' => ''
                           ,
                         ];
         $errores = [];
         $parametros = comprobarParametrosInsertar(PAR_URL, $errores);
-        comprobarValoresDeco($parametros,$errores, $pdo);
+        comprobarValoresInsertar($parametros,$errores,$pdo);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($errores)) {
             $sent = $pdo->prepare('INSERT
-                                     INTO descodificadores (marca, modelo, serial, fecha_compra, lugar_compra, cliente_id)
-                                   VALUES (:marca, :modelo, :serial, :fecha_compra, :lugar_compra, :cliente)');
+                                     INTO clines (servidor, puerto, usuario, password, fecha_alta, cliente_id)
+                                   VALUES (:servidor, :puerto, :usuario, :password, :fecha_alta, :cliente)');
             $sent->execute($parametros);
             alert('La fila se ha insertado correctamente.');
             
@@ -54,57 +54,57 @@ if (!isset($_SESSION['login'])){
     <div class="container">
         <div class="row">
             <div class="col-6 offset-3 mt-5 p-3" style="box-shadow: 2px 2px 10px #666;">
-            <h2>Insertar descodificador</h2><hr>
+            <h2>Insertar cline</h2><hr>
             <form  action="" method="post">
                 <div class="form-group">
-                    <label>marca</label>
+                    <label>Servidor</label>
                     <input 
                         type="text" 
-                        class="form-control <?=esValido('marca',$errores)?>"                        
-                        name="marca" 
-                        value="<?=$parametros['marca']?>"    
+                        class="form-control <?=esValido('servidor',$errores)?>"                        
+                        name="servidor" 
+                        value="<?=$parametros['servidor']?>"    
                     > 
-                   <?=mensajeError('marca',$errores)?> 
+                   <?=mensajeError('servidor',$errores)?> 
                 </div>
 
                 <div class="form-group">
-                    <label>modelo</label>
-                    <input type="text" 
-                           class="form-control <?=esValido('modelo',$errores)?>" 
-                           name="modelo" 
-                           value="<?=$parametros['modelo']?>"
+                    <label>Puerto</label>
+                    <input type="number" 
+                           class="form-control <?=esValido('puerto',$errores)?>" 
+                           name="puerto" 
+                           value="<?=$parametros['puerto']?>"
                     > 
-                    <?=mensajeError('modelo',$errores)?>    
+                    <?=mensajeError('puerto',$errores)?>    
                 </div>
 
                 <div class="form-group">
-                    <label>serial</label>
+                    <label>Usuario</label>
                     <input type="text" 
-                           class="form-control <?=esValido('serial',$errores)?>" 
-                           name="serial" 
-                           value="<?=$parametros['serial']?>"
+                           class="form-control <?=esValido('usuario',$errores)?>" 
+                           name="usuario" 
+                           value="<?=$parametros['usuario']?>"
                     >   
-                    <?=mensajeError('serial',$errores)?> 
+                    <?=mensajeError('usuario',$errores)?> 
                 </div>
 
                 <div class="form-group">
-                    <label>fecha_compra</label>
-                    <input type="date" 
-                           class="form-control <?=esValido('fecha_compra',$errores)?>" 
-                           name="fecha_compra" 
-                           value="<?=$parametros['fecha_compra']?>"
+                    <label>Password</label>
+                    <input type="text" 
+                           class="form-control <?=esValido('password',$errores)?>" 
+                           name="password" 
+                           value="<?=$parametros['password']?>"
                     >   
-                    <?=mensajeError('fecha_compra',$errores)?> 
+                    <?=mensajeError('password',$errores)?> 
                 </div>
                 
                 <div class="form-group">
-                    <label>lugar_compra</label>
-                    <input type="text" 
-                           class="form-control <?=esValido('lugar_compra',$errores)?>" 
-                           name="lugar_compra" 
-                           value="<?=$parametros['lugar_compra']?>"
+                    <label>Fecha de alta</label>
+                    <input type="date" 
+                           class="form-control <?=esValido('fecha_alta',$errores)?>" 
+                           name="fecha_alta" 
+                           value="<?=$parametros['fecha_alta']?>"
                     >
-                    <?=mensajeError('lugar_compra',$errores)?>    
+                    <?=mensajeError('fecha_alta',$errores)?>    
                 </div>
 
                 <?php
@@ -129,6 +129,7 @@ if (!isset($_SESSION['login'])){
                 
                 <button type="submit" class="btn btn-dark active">Insertar</button>
             </form>
+        </div>
         
     </div>
 
@@ -142,14 +143,6 @@ if (!isset($_SESSION['login'])){
     <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
     <script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>
-    <script>
-        eliminar.onclick = function() {
-            if(!confirm('¿Seguro que quieres eliminar?')) {
-                return false;
-            };
-            return true;
-            
-        }
-    </script>
+   
   </body>
 </html>

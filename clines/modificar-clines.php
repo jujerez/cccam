@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['login'])){
-    header('Location: login.php');
+    header('Location: /usuarios/login.php');
     return;
 }
 ?>
@@ -24,7 +24,7 @@ if (!isset($_SESSION['login'])){
   </head>
   <body>
     <?php
-        require __DIR__ . '/auxiliar.php';
+        require __DIR__ . '/../auxiliar.php';
         mostrarMenu();
 
         $pdo = conectar();
