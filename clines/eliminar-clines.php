@@ -22,7 +22,7 @@
   </head>
   <body>
     <?php
-        require __DIR__ .'/auxiliar.php' ;
+        require __DIR__ .'/../auxiliar.php' ;
         $pdo = conectar();
         $id = trim($_POST['id']);
         borrarFila($pdo,'clines', $id,'mostrar-clines.php');
