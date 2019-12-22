@@ -126,10 +126,11 @@ if (!isset($_SESSION['login'])){
                 </div>
 
                 <?php
-                    $sent = $pdo->query('SELECT *
+                    $sent = $pdo->prepare('SELECT *
                                             FROM clientes
-                                            WHERE true;
+                                            WHERE usuario_id = :usuario_id;
                                                 ');
+                    $sent->execute(['usuario_id'=>$_SESSION['id']]);
                 ?>
 
 

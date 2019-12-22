@@ -18,7 +18,7 @@ if (!isset($_SESSION['login'])){
 
     <!-- Material Design for Bootstrap CSS -->
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="/css/main.css">
 
     <title>Mostrar clientes</title>
   </head>
@@ -27,10 +27,11 @@ if (!isset($_SESSION['login'])){
         require __DIR__ . '/../auxiliar.php';
         mostrarMenu();
 
-        $pdo = conectar();  
-        $sent = $pdo->prepare('SELECT * FROM clientes WHERE usuario_id = :usuario_id');
-        $sent->execute([ 'usuario_id' => $_SESSION['id'] ]);
-      
+        $pdo = conectar();
+        var_dump($_SESSION['id']);
+        $sent = $pdo->prepare('SELECT * FROM clientes WHERE usuario_id = :id');
+        $sent->execute(['id' => $_SESSION['id']]);
+        
     ?>
 
     <div class="container">
@@ -60,7 +61,7 @@ if (!isset($_SESSION['login'])){
                                 <input type="hidden" name="id" value="<?=h($v['id'])?>">
                                 <button type="submit"  class="btn btn-danger btn-sm active eliminar">Eliminar</button>
                             </form> 
-                            <a href="modificar-cliente.php?id=<?=h($v['id'])?>"><button class="btn btn-success btn-sm active mb-0 mt-0">Modificar</button></a>
+                            <a href="modificar-clientes.php?id=<?=h($v['id'])?>"><button class="btn btn-success btn-sm active mb-0 mt-0">Modificar</button></a>
                                 
                         </td>
                 </tbody>
@@ -78,6 +79,8 @@ if (!isset($_SESSION['login'])){
     <script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>
     <script>
 
+        
+
         var eliminar = document.getElementsByClassName('eliminar');
         for (let i = 0; i < eliminar.length; i++) {
              
@@ -89,6 +92,8 @@ if (!isset($_SESSION['login'])){
                 
             }
         }
+
+        
     </script>
   </body>
 </html>
