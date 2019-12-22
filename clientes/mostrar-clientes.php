@@ -28,7 +28,7 @@ if (!isset($_SESSION['login'])){
         mostrarMenu();
 
         $pdo = conectar();
-        var_dump($_SESSION['id']);
+       
         $sent = $pdo->prepare('SELECT * FROM clientes WHERE usuario_id = :id');
         $sent->execute(['id' => $_SESSION['id']]);
         

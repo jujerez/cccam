@@ -29,19 +29,16 @@ if (!isset($_SESSION['login'])){
 
         $pdo = conectar();
         const PAR_URL = [
-            'nombre' => ''
-          , 'telefono' => '' 
-          , 'direccion' => '' 
-          , 'nota' => '' 
-          
+            'marca' => ''
+          , 'modelo' => '' 
+          , 'serial' => '' 
+          , 'fecha_compra' => '' 
+          , 'lugar_compra' => ''
+             
         ];
-
-        $id = trim($_GET['id']);
         $errores = [];
         $parametros = comprobarParametrosInsertar(PAR_URL, $errores);
-        comprobarValoresClientes($parametros,$errores,$pdo);
-        
-        
+        comprobarValoresClientes($parametros,$errores,$pdo); 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($errores)) {
         $sent = $pdo->prepare('UPDATE clientes
                                  SET nombre = :nombre
@@ -50,20 +47,17 @@ if (!isset($_SESSION['login'])){
                                     , nota = :nota
                                     , usuario_id = :usuario_id
                                  WHERE id = :id');
+         
+         $res=$sent->execute([
+             'nombre'     => $parametros['nombre'],
+             'telefono'   => $parametros['telefono'],
+             'direccion' => $parametros['direccion'],
+             'nota'       => $parametros['nota'],
+             'usuario_id' => $_SESSION['id'],
+             'id'         => trim($_GET['id'])
 
-
-        $res=$sent->execute([
-            'nombre'     => $parametros['nombre'],
-            'telefono'   => $parametros['telefono'],
-            'direccion'  => $parametros['direccion']?: NULL,
-            'nota'       => $parametros['nota'] ?: NULL,
-            'usuario_id' => $_SESSION['id'],
-            'id'         => $id,
-            
-        ]);
-        
-        $res ? alert('El cliente se ha modificado correctamente.')
-             : alert('Error al modificar cliente', 'alert-danger');
+         ]);
+         $res ? alert('El cliente se ha modificado correctamente.'): alert('Error');
         
         }
 
@@ -142,8 +136,6 @@ if (!isset($_SESSION['login'])){
     <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
     <script>$(document).ready(function() {$('body').bootstrapMaterialDesign();});</script>
-    <script>
-
-    </script>
+    
   </body>
 </html>
