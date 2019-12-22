@@ -147,6 +147,7 @@ if (!isset($_SESSION['login'])){
                 
                 
                 <button type="submit" class="btn btn-dark active">Modificar </button>
+                <a href="mostrar-clines.php" class="btn btn-info active" role="button">Volver</a>
             </form>
         </div>
         

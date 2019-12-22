@@ -77,7 +77,7 @@ if (!isset($_SESSION['login'])){
                              ]);
             
             if (($parametros = $sent->fetch(PDO::FETCH_ASSOC)) === false) {
-                alert('Error interno del servidor.');
+                alert('Error interno del servidor.', 'alert-danger');
             }
         }
     ?>
@@ -130,6 +130,7 @@ if (!isset($_SESSION['login'])){
         
                 
                 <button type="submit" class="btn btn-dark active">Modificar</button>
+                <a href="mostrar-clientes.php" class="btn btn-info active" role="button">Volver</a>
             </form>
         </div>
         

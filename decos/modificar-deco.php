@@ -24,106 +24,120 @@ if (!isset($_SESSION['login'])){
   </head>
   <body>
     <?php
-        require __DIR__ . '/../auxiliar.php';
-        mostrarMenu();
-
-        $pdo = conectar();
-        const PAR_URL = [
-            'marca' => ''
-          , 'modelo' => '' 
-          , 'serial' => '' 
-          , 'fecha_compra' => '' 
-          , 'lugar_compra' => ''
-             
-        ];
-        $errores = [];
-        $parametros = comprobarParametrosInsertar(PAR_URL, $errores);
-        comprobarValoresClientes($parametros,$errores,$pdo); 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($errores)) {
-        $sent = $pdo->prepare('UPDATE clientes
-                                 SET nombre = :nombre
-                                    , telefono = :telefono
-                                    , direccion = :direccion
-                                    , nota = :nota
-                                    , usuario_id = :usuario_id
-                                 WHERE id = :id');
-         
-         $res=$sent->execute([
-             'nombre'     => $parametros['nombre'],
-             'telefono'   => $parametros['telefono'],
-             'direccion' => $parametros['direccion'],
-             'nota'       => $parametros['nota'],
-             'usuario_id' => $_SESSION['id'],
-             'id'         => trim($_GET['id'])
-
-         ]);
-         $res ? alert('El cliente se ha modificado correctamente.'): alert('Error');
-        
-        }
-
-        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            $sent = $pdo->prepare('SELECT *
-                                     FROM clientes
-                                    WHERE id = :id AND usuario_id = :usuario_id');
-            $sent->execute([
-                              'id' => trim($_GET['id']) 
-                             , 'usuario_id' => $_SESSION['id']
-                             ]);
+    require __DIR__ . '/../auxiliar.php';
+   // mostrarMenu();
+    $pdo = conectar();
+    const PAR_URL = [
+          'marca' => ''
+        , 'modelo' => '' 
+        , 'serial' => '' 
+        , 'fecha_compra' => '' 
+        , 'lugar_compra' => ''
             
-            if (($parametros = $sent->fetch(PDO::FETCH_ASSOC)) === false) {
-                alert('Error interno del servidor.');
-            }
+    ];
+    $errores = [];
+    $parametros = comprobarParametrosInsertar(PAR_URL, $errores);
+    comprobarValoresDeco($parametros,$errores,$pdo); 
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($errores)) {
+    $sent = $pdo->prepare('UPDATE descodificadores
+                                SET marca = :marca
+                                , modelo = :modelo
+                                , serial = :serial
+                                , fecha_compra = :fecha_compra
+                                , lugar_compra = :lugar_compra
+                                , usuario_id = :usuario_id
+                                WHERE id = :id');
+        
+        $res=$sent->execute([
+            'marca'        => $parametros['marca'],
+            'modelo'       => $parametros['modelo'],
+            'serial'       => $parametros['serial'],
+            'fecha_compra' => $parametros['fecha_compra'],
+            'lugar_compra' => $parametros['lugar_compra'],
+            'usuario_id'   => $_SESSION['id'],
+            'id'           => trim($_GET['id'])
+
+        ]);
+        
+        $res ? alert('El deco se ha modificado correctamente.'): alert('Error');
+    
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+        $sent = $pdo->prepare('SELECT *
+                                    FROM descodificadores
+                                WHERE id = :id AND usuario_id = :usuario_id');
+        $sent->execute([
+                            'id' => trim($_GET['id']) 
+                            , 'usuario_id' => $_SESSION['id']
+                            ]);
+        
+        if (($parametros = $sent->fetch(PDO::FETCH_ASSOC)) === false) {
+            alert('Error interno del servidor.', 'alert-danger');
         }
+    }
     ?>
 
     <div class="container">
         <div class="row">
             <div class="col-6 offset-3 mt-5 p-3" style="box-shadow: 2px 2px 10px #666;">
-            <h2>Modificar cliente</h2><hr>
+            <h2>Modificar deco</h2><hr>
             <form  action="" method="post">
                 <div class="form-group">
-                    <label>Nombre</label>
+                    <label>Marca</label>
                     <input 
                         type="text" 
-                        class="form-control <?=esValido('nombre',$errores)?>"                        
-                        name="nombre" 
-                        value="<?=$parametros['nombre']?>"    
+                        class="form-control <?=esValido('marca',$errores)?>"                        
+                        name="marca" 
+                        value="<?=$parametros['marca']?>"    
                     > 
-                   <?=mensajeError('nombre',$errores)?> 
+                   <?=mensajeError('marca',$errores)?> 
                 </div>
 
                 <div class="form-group">
-                    <label>telefono</label>
-                    <input type="number" 
-                           class="form-control <?=esValido('telefono',$errores)?>" 
-                           name="telefono" 
-                           value="<?=$parametros['telefono']?>"
+                    <label>Modelo</label>
+                    <input type="text" 
+                           class="form-control <?=esValido('modelo',$errores)?>" 
+                           name="modelo" 
+                           value="<?=$parametros['modelo']?>"
                     > 
-                    <?=mensajeError('telefono',$errores)?>    
+                    <?=mensajeError('modelo',$errores)?>    
                 </div>
 
                 <div class="form-group">
-                    <label>direccion</label>
+                    <label>Serial</label>
                     <input type="text" 
-                           class="form-control <?=esValido('direccion',$errores)?>" 
-                           name="direccion" 
-                           value="<?=$parametros['direccion']?>"
+                           class="form-control <?=esValido('serial',$errores)?>" 
+                           name="serial" 
+                           value="<?=$parametros['serial']?>"
                     >   
-                    <?=mensajeError('direccion',$errores)?> 
+                    <?=mensajeError('serial',$errores)?> 
                 </div>
 
                 <div class="form-group">
-                    <label>nota</label>
-                    <input type="text" 
-                           class="form-control <?=esValido('nota',$errores)?>" 
-                           name="nota" 
-                           value="<?=$parametros['nota']?>"
+                    <label>Fecha compra</label>
+                    <input type="date" 
+                           class="form-control <?=esValido('fecha_compra',$errores)?>" 
+                           name="fecha_compra" 
+                           value="<?=$parametros['fecha_compra']?>"
                     >   
-                    <?=mensajeError('nota',$errores)?> 
+                    <?=mensajeError('fecha_compra',$errores)?> 
+                </div>
+
+                <div class="form-group">
+                    <label>Lugar de compra</label>
+                    <input type="text" 
+                           class="form-control <?=esValido('lugar_compra',$errores)?>" 
+                           name="lugar_compra" 
+                           value="<?=$parametros['lugar_compra']?>"
+                    >   
+                    <?=mensajeError('lugar_compra',$errores)?> 
                 </div>
         
                 
                 <button type="submit" class="btn btn-dark active">Modificar</button>
+                <a href="mostrar-decos.php" class="btn btn-info active" role="button">Volver</a>
+
             </form>
         </div>
         
