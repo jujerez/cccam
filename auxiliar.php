@@ -184,8 +184,8 @@
             //header("Location:".$_SERVER['HTTP_REFERER']); 
             header("Location: $anterior"); 
         } else {
-            //alert('Ha ocurrido un error inesperado.', 'danger');
-            echo('Ha ocurrio un error inesperado, posiblemente este violando una restricción al borrar');
+            alert('No es posible borrar el cliente, porque existe una cline asociada a el ', 'alert-danger');
+            
         }
     }
 
