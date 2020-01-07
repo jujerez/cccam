@@ -612,7 +612,8 @@
             }
         }
 
-        function getMediaPuerto() {
+        function getMediaPuerto() 
+        {
             $pdo = conectar();
 
             $sent = $pdo->prepare('SELECT  round(avg(puerto),0) as media_puerto
@@ -621,6 +622,11 @@
             $resultado = $sent->fetch(PDO::FETCH_ASSOC);
             return $resultado['media_puerto'];
 
+        }
+
+        function selected($op, $o)
+        {
+            return $op == $o ? 'selected' : '';
         }
 
 

@@ -55,7 +55,7 @@ if (!isset($_SESSION['login'])){
 
             $res ? alert('La cline se ha insertado correctamente.') 
                  : alert('Error al insertar.', 'alert-danger');
-            
+            $parametros = PAR_URL;
             
         }
     
@@ -140,6 +140,7 @@ if (!isset($_SESSION['login'])){
                 
                 
                 <button type="submit" class="btn btn-dark active">Insertar</button>
+                <a href="mostrar-clines.php" class="btn btn-info active" role="button">Volver</a>
             </form>
         </div>
         

@@ -41,6 +41,7 @@ if (!isset($_SESSION['login'])){
         $errores = [];
         $parametros = comprobarParametrosInsertar(PAR_URL, $errores);
         comprobarValoresInsertar($parametros,$errores,$pdo);
+        
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($errores)) {
         $sent = $pdo->prepare('UPDATE clines
@@ -133,13 +134,17 @@ if (!isset($_SESSION['login'])){
                     $sent->execute(['usuario_id'=>$_SESSION['id']]);
                 ?>
 
-
+                
 
                 <div class="input-group mb-3">
     
                     <select class="custom-select" name="cliente">
                         <?php foreach ($sent as $fila => $v): ?>
-                            <option value="<?=$v['id']?>"><?=$v['nombre']?></option>
+                            <option value="<?=$v['id']?>" <?=selected($v['id'],$parametros['cliente_id'])?>> 
+                                   
+                                <?=$v['nombre']?>
+                                
+                            </option>
                             
                         <?php endforeach ?> 
                     </select>
